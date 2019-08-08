@@ -11,8 +11,8 @@ while True:
     read_sockets,write_socket, error_socket = select.select(sockets,[],[])
     for sock in read_sockets:
         if(sock == client_socket):
-            message = client_socket.recvfrom(1024).decode()
-            print(message)
+            message, addr = client_socket.recvfrom(1024)
+            print(message.decode())
         else:
             message = input()
             client_socket.sendto(message.encode(), ('127.0.0.1', port))

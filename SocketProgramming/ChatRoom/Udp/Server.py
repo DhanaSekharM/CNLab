@@ -10,22 +10,24 @@ server_socket.bind(address)
 clients = []
 
 def handle_clients(address, message):
-    server_socket.sendto('Chat Room'.encode(), address)
-    while True:
-        # message, addr = server_socket.recvfrom(1024).decode()
-        if message:
-            print(address[0], ': ', message)
-            message_to_send = address[0] + ': ' + message
-            for client in clients:
-                if client != addr :
-                    client.sendto(message_to_send.encode())
+    # server_socket.sendto('Chat Room'.encode(), address)
+    # message, addr = server_socket.recvfrom(1024).decode()
+    if message:
+        # print(address[0], ': ', message)
+        message_to_send = address[0] + ':'+str(address[1])+ '- ' + message
+        print(message_to_send)
+        for client in clients:
+            if client != addr :
+                server_socket.sendto(message_to_send.encode(), client)
 
 
 while True:
     data, addr = server_socket.recvfrom(1024)
+    if(addr not in clients):
+        print(addr, 'Connected')
     clients.append(addr)
     # print(addr, ' connected')
-    threading.Thread(target=handle_clients, args=(addr, data)).start()
+    threading.Thread(target=handle_clients, args=(addr, data.decode())).start()
 
 
 

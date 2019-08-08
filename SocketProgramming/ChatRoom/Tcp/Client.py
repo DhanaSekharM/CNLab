@@ -3,9 +3,10 @@ import select
 import sys
 
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-address = str(sys.argv[1])
+ip = str(sys.argv[1])
 port = int(sys.argv[2])
-client_socket.connect(('127.0.0.1', port))
+client_socket.bind((ip, port))
+client_socket.connect(('127.0.0.1', 9876))
 
 while True:
     sockets = [sys.stdin, client_socket]
